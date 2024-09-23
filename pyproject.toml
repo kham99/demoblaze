@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "demoblaze"
+version = "0.1.0"
+description = ""
+authors = ["Amir Khabiev <amir.khabiev@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytest = "^8.3.3"
+pytest-playwright = "^0.5.2"
+allure-pytest = "^2.13.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
