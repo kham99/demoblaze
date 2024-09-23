@@ -1,6 +1,5 @@
 import random
 from src.ui.pages.base_page import BasePage
-from playwright.sync_api import Page, expect
 
 HOME_PAGE_URL = 'https://www.demoblaze.com/index.html'
 

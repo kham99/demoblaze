@@ -1,7 +1,5 @@
-import logging
 import time
 import pytest
-from playwright.sync_api import sync_playwright
 from src.ui.pages.home_page import HomePage
 from src.ui.pages.cart_page import CartPage
 import allure
