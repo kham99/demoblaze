@@ -1,7 +1,8 @@
-import time
-
 import pytest
 from playwright.sync_api import sync_playwright
+
+from src.ui.pages.cart_page import CartPage
+from src.ui.pages.home_page import HomePage
 
 
 @pytest.fixture()
@@ -11,3 +12,13 @@ def page():
         page = browser.new_page(no_viewport=True)
         yield page
         browser.close()
+
+
+@pytest.fixture()
+def home_page(page) -> HomePage:
+    return HomePage(page)
+
+
+@pytest.fixture()
+def cart_page(page) -> CartPage:
+    return CartPage(page)

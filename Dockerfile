@@ -2,11 +2,12 @@ FROM python:3.12-slim-bullseye
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock /app/
-RUN pip install --no-cache-dir poetry
+COPY pyproject.toml poetry.lock ./
+RUN pip install --no-cache-dir poetry \
+    && poetry install --no-interaction --no-root \
+    &&  poetry run playwright install \
+    && playwright install-deps
+
 COPY . /app
-RUN poetry install --no-interaction --no-root
 
-
-
-CMD ["poetry", "run", "pytest", "-s", "-v"]
+CMD ["poetry", "run", "pytest", "-s", "-v", "--alluredir", "allure-results"]

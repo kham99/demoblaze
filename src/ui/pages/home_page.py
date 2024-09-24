@@ -1,7 +1,17 @@
 import random
+from enum import StrEnum
+
+import allure
+
 from src.ui.pages.base_page import BasePage
+from src.ui.pages.elements.top_menu import TopMenuElement
 
 HOME_PAGE_URL = 'https://www.demoblaze.com/index.html'
+
+
+class Good(StrEnum):
+    NEXUS_6 = "Nexus 6"
+
 
 class HomePageLocators:
     PHONES_CATEGORY = """//a[@onclick = "byCat('phone')"]"""
@@ -28,23 +38,40 @@ class HomePageLocators:
                             LAPTOP_DELL_I7, LAPTOP_DELL_2017]
     ALL_MONITORS_LOCATORS = [MONITOR_ASUS, MONITOR_APPLE]
 
+    PRODUCT_NAME = '//h2[@class="name"]'
+
+
+
+    @staticmethod
+    def locator(good_text: Good) -> str:
+        return f"//a[@class='hrefch' and text()='{good_text}']"
+
+
 class HomePage:
     url = HOME_PAGE_URL
 
     def __init__(self, page):
         self._base_page = BasePage(page, self.url)
         self.locators = HomePageLocators()
+        self.top_menu = TopMenuElement(page)
 
+    @allure.step("Открытие домашней страницы")
     def open(self):
         self._base_page.open()
 
+    @allure.step("Клик по категории {category}")
     def click_category(self, category):
-        if category == 'phones':
-            self._base_page.click(self.locators.PHONES_CATEGORY)
-        elif category == 'monitors':
-            self._base_page.click(self.locators.MONITORS_CATEGORY)
-        elif category == 'laptops':
-            self._base_page.click(self.locators.LAPTOPS_CATEGORY)
+        with allure.step("Контекстный менеджер"):
+            if category == 'phones':
+                self._base_page.click(self.locators.PHONES_CATEGORY)
+            elif category == 'monitors':
+                self._base_page.click(self.locators.MONITORS_CATEGORY)
+            elif category == 'laptops':
+                self._base_page.click(self.locators.LAPTOPS_CATEGORY)
+
+    def add_good(self, good: Good):
+        locator = self.locators.locator(good)
+        self._base_page.click(locator)
 
     def choice_product(self, category):
         if category == 'phones':
@@ -56,3 +83,9 @@ class HomePage:
         elif category == 'laptops':
             random_locator = random.choice(self.locators.ALL_LAPTOPS_LOCATORS)
             self._base_page.page.click(random_locator)
+
+    @allure.step("Получение названия продукта")
+    def get_product_name(self):
+        return self._base_page.get_text(locator=self.locators.PRODUCT_NAME)
+
+
