@@ -3,6 +3,7 @@ from playwright.sync_api import sync_playwright
 
 from src.ui.pages.cart_page import CartPage
 from src.ui.pages.home_page import HomePage
+from src.ui.pages.good_page import GoodPage
 
 
 @pytest.fixture()
@@ -22,3 +23,8 @@ def home_page(page) -> HomePage:
 @pytest.fixture()
 def cart_page(page) -> CartPage:
     return CartPage(page)
+
+
+@pytest.fixture()
+def good_page(page) -> GoodPage:
+    return GoodPage(page)

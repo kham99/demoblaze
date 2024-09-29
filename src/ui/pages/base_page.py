@@ -4,6 +4,7 @@ import allure
 
 DEFAULT_TIMEOUT = 5000
 
+
 class BasePage:
     def __init__(self, page: Page, url):
         self.page = page

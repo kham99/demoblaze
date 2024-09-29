@@ -1,16 +1,11 @@
 import random
 from enum import StrEnum
-
+import re
 import allure
-
 from src.ui.pages.base_page import BasePage
 from src.ui.pages.elements.top_menu import TopMenuElement
 
 HOME_PAGE_URL = 'https://www.demoblaze.com/index.html'
-
-
-class Good(StrEnum):
-    NEXUS_6 = "Nexus 6"
 
 
 class HomePageLocators:
@@ -39,12 +34,7 @@ class HomePageLocators:
     ALL_MONITORS_LOCATORS = [MONITOR_ASUS, MONITOR_APPLE]
 
     PRODUCT_NAME = '//h2[@class="name"]'
-
-
-
-    @staticmethod
-    def locator(good_text: Good) -> str:
-        return f"//a[@class='hrefch' and text()='{good_text}']"
+    PRODUCT_PRICE = '//h3[@class="price-container"]'
 
 
 class HomePage:
@@ -69,10 +59,6 @@ class HomePage:
             elif category == 'laptops':
                 self._base_page.click(self.locators.LAPTOPS_CATEGORY)
 
-    def add_good(self, good: Good):
-        locator = self.locators.locator(good)
-        self._base_page.click(locator)
-
     def choice_product(self, category):
         if category == 'phones':
             random_locator = random.choice(self.locators.ALL_PHONES_LOCATORS)
@@ -88,4 +74,10 @@ class HomePage:
     def get_product_name(self):
         return self._base_page.get_text(locator=self.locators.PRODUCT_NAME)
 
+    @allure.step("Получение цены продукта")
+    def get_price_product(self):
+        return self._base_page.get_text(locator=self.locators.PRODUCT_PRICE)
 
+    @staticmethod
+    def extract_number(price_str):
+        return re.sub(r'[^\d]', '', price_str)
